@@ -9,10 +9,8 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 
 library PriceConverter {
     //Now our purpose here is to make a function which allows us to read the ETH/USD price using chainlink Data feed.
-    function getPrice(
-        AggregatorV3Interface priceFeed
-    ) internal view returns (uint256) {
-        (, int256 answer, , , ) = priceFeed.latestRoundData(); //This saves everything from 0x694AA1769357215DE4FAC081bf1f309aDC325306 which this address defines in this function.
+    function getPrice(AggregatorV3Interface priceFeed) internal view returns (uint256) {
+        (, int256 answer,,,) = priceFeed.latestRoundData(); //This saves everything from 0x694AA1769357215DE4FAC081bf1f309aDC325306 which this address defines in this function.
         //We are only interested in the answer so we save only answer.
         require(answer > 0, "Invalid price data"); //This is to check if the answer is valid and not negative or zero.
         // casting to uint256 is safe because answer > 0
@@ -21,10 +19,7 @@ library PriceConverter {
     }
 
     //Now we need a function which which gives us the price of specific amount of ETH.
-    function getConversionRate(
-        uint256 ethAmount,
-        AggregatorV3Interface priceFeed
-    ) internal view returns (uint256) {
+    function getConversionRate(uint256 ethAmount, AggregatorV3Interface priceFeed) internal view returns (uint256) {
         uint256 ethPrice = getPrice(priceFeed); //This gives us the price of Eth/USD on Sepolia Testnet. We are using this as our base price to be able to convert other currencies.
         uint256 ethAmountInUsd = (ethAmount * ethPrice) / 1e18; //eth amount is in 18 decimal places and also ethPrice we divide it by 1e18 to bring it to 18 decimal places.
         return ethAmountInUsd;

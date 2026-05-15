@@ -4,9 +4,7 @@ pragma solidity ^0.8.18;
 //This will be a little gas efficient contract based on teachings of Patrick Collins.
 //So the purpose is to make sure people can fund this contract and the owner can withdraw those funds.
 import {PriceConverter} from "./PriceConverter.sol";
-import {
-    AggregatorV3Interface
-} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 error FundMe__insufficientFunds(); //We will use this to check the minimum USD requirements to be funded.
 error FundMe__NotOwner();
@@ -64,9 +62,7 @@ contract FundMe {
         s_funders = new address[](0);
 
         //Now we send the Eth to the owner of the contract
-        (bool callSuccess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         if (!callSuccess) {
             revert("Failed to withdraw money");
         }
@@ -84,9 +80,7 @@ contract FundMe {
         s_funders = new address[](0);
 
         //Now we send the Eth to the owner of the contract
-        (bool callSuccess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         if (!callSuccess) {
             revert("Failed to withdraw money");
         }
@@ -105,9 +99,7 @@ contract FundMe {
     }
 
     //Now we will add some getter functions to get the private variables of the contract.
-    function getAddressToAmountFunded(
-        address funder
-    ) external view returns (uint256) {
+    function getAddressToAmountFunded(address funder) external view returns (uint256) {
         return s_addressToAmountFunded[funder];
     }
 
